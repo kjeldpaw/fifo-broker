@@ -1,0 +1,74 @@
+@startuml
+
+package Api {
+
+    class MessageHeader {
+        String name
+        String value
+    }
+
+    class Message {
+        String id
+        String channel
+        String group
+        byte[] content
+        Set<MessageHeader> headers
+    }
+
+    interface MessageProducerResource {
+        Uni<Void> produce(Message message)
+    }
+
+    interface MessageConsumerResource {
+        Uni<Void> approve(String messageId)
+        Uni<Void> reject(String messageId, String message)
+        Uni<Void> cancel(String messageId, String message)
+        Uni<Message> poll(String channel)
+        Uni<Message> poll(String channel, String group)
+    }
+
+    interface MessageChannelResource {
+        void onOpen(Session session, String channel)
+        void onClose(Session session, String channel)
+        void onError(Session session, String channel, Throwable throwable)
+        void onMessage(InputStream message, String channel)
+    }
+
+}
+
+package Entity {
+
+    enum State {
+        Pending
+        Processing
+        Failed
+        Timeout
+        Cancelled
+    }
+
+    class Record {
+        String id
+        Timestamp created
+        Timestamp modified
+        byte[] content
+        String channel
+        String group
+        Record parent
+        Record child
+        State state
+        Set<RecordHeader> headers
+    }
+
+    class RecordHeader {
+        String id
+        Timestamp created
+        Timestamp modified
+        String name
+        String value
+        Record record
+    }
+}
+
+
+
+@enduml

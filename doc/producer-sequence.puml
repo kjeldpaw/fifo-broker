@@ -1,0 +1,13 @@
+@startuml
+
+entity Message
+participant MessageProducerResource
+participant MessageChannelResource
+database Database
+
+Message -> MessageProducerResource : produce(Message message)
+MessageProducerResource -> Database
+Message -> MessageChannelResource : onMessage(InputStream message, String channel)
+MessageChannelResource -> Database
+
+@enduml

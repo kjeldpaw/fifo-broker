@@ -1,0 +1,10 @@
+@startuml
+
+participant Client
+participant MessageConsumerResource
+
+Client -> MessageConsumerResource : poll(String channel)
+MessageConsumerResource --> Client : Message
+Client -> MessageConsumerResource : reject(String messageId, String message)
+
+@enduml

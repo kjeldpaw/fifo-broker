@@ -1,0 +1,12 @@
+@startuml
+
+
+participant MessageChannelResource
+participant Client
+participant MessageConsumerResource
+
+MessageChannelResource -> Client : broadcast(Message message)
+Client -> MessageConsumerResource : accept(String messageId)
+
+
+@enduml
